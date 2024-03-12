@@ -25,12 +25,14 @@ export default class NewBill {
     // BUG FIX : Check if the file is a .jpeg, .jpg or .png
     const regexFormat = /\.(jpe?g|png)$/i
     let fileName = ''
+    const errorFile = this.document.querySelector(`span[data-testid="file-error"]`)
     if (regexFormat.test(filePath[filePath.length - 1])) {
       this.fileName = filePath[filePath.length - 1]
       this.file = file
+      errorFile.classList.add('hidden')
     } else {
       e.target.value = ''
-      alert('Veuillez choisir un fichier de type .jpeg, .jpg ou .png')
+      errorFile.classList.remove('hidden')
     }
   }
 
