@@ -158,6 +158,7 @@ describe("Given I am a user connected as an employee", () => {
       }
     })
 
+    // Unit test
     test("Then a bill should be created", async () => {
       document.body.innerHTML = NewBillUI()
 
@@ -258,26 +259,13 @@ describe("Given I am a user connected as an employee", () => {
 
       newBill.billId = "47qAXb6fIm2zOKkLzMro"
 
-      const testBill = {
-        "email": "employee@billed",
-        "type": "Hôtel et logement",
-        "name": "encore",
-        "amount": 400,
-        "date": "2004-04-04",
-        "vat": "80",
-        "pct": 20,
-        "commentary": "séminaire billed",
-        "fileUrl": "https://firebasestorage.googleapis.com/v0/b/billable-677b6.a…f-1.jpg?alt=media&token=c1640e12-a24b-4b11-ae52-529112e9602a",
-        "fileName": "preview-facture-free-201801-pdf-1.jpg",
-        "status": "pending",
-        "commentAdmin": "ok",
-      }
-
-      await newBill.updateBill(testBill)
+      const acceptedBill = mockedBills.bills('accepted')
+      await newBill.updateBill(acceptedBill)
 
       expect(spyUpdate).toHaveBeenCalled()
-      expect(spyUpdate).toHaveBeenCalledWith(testBill)
+      expect(spyUpdate).toHaveBeenCalledWith(acceptedBill)
     })
+
 
     test("Then the bill should be updated with errors", async () => {
       document.body.innerHTML = NewBillUI()
@@ -293,20 +281,7 @@ describe("Given I am a user connected as an employee", () => {
 
       newBill.billId = "47qAXb6fIm2zOKkLzMro"
 
-      const testBill = {
-        "email": "employee@billed.com",
-        "type": "Hôtel et logement",
-        "name": "encore",
-        "amount": 400,
-        "date": "2004-04-04",
-        "vat": "80",
-        "pct": 20,
-        "commentary": "séminaire billed",
-        "fileUrl": "https://firebasestorage.googleapis.com/v0/b/billable-677b6.a…f-1.jpg?alt=media&token=c1640e12-a24b-4b11-ae52-529112e9602a",
-        "fileName": "preview-facture-free-201801-pdf-1.jpg",
-        "status": "pending",
-        "commentAdmin": "ok",
-      }
+      const refusedBill = mockedBills.bills('refused')
 
       const formNewBill = screen.getByTestId("form-new-bill")
       fireEvent.submit(formNewBill)
@@ -314,16 +289,14 @@ describe("Given I am a user connected as an employee", () => {
       // Mock the updateBill method to avoid making a real API call
       spyUpdate.mockResolvedValueOnce()
 
-      await expect(newBill.updateBill(testBill)).resolves.toEqual(undefined)
-      expect(spyUpdate).toHaveBeenCalledWith(testBill)
+      await expect(newBill.updateBill(refusedBill)).resolves.toEqual(undefined)
+      expect(spyUpdate).toHaveBeenCalledWith(refusedBill)
 
       // Mock an error to test the catch block
       spyUpdate.mockRejectedValueOnce(new Error('Erreur de mise à jour'))
 
-      await expect(newBill.updateBill(testBill)).rejects.toThrow('Erreur de mise à jour')
-      expect(spyUpdate).toHaveBeenCalledWith(testBill)
-
-
+      await expect(newBill.updateBill(refusedBill)).rejects.toThrow('Erreur de mise à jour')
+      expect(spyUpdate).toHaveBeenCalledWith(refusedBill)
     })
   })
 })

@@ -59,7 +59,6 @@ describe("Given I am connected as an employee", () => {
         const handleClickNewBill = jest.fn((event) => mockBill.handleClickNewBill(event, bills))
         const buttonNewBill = screen.getByTestId('btn-new-bill')
         buttonNewBill.addEventListener('click', handleClickNewBill)
-
         fireEvent.click(buttonNewBill)
         expect(handleClickNewBill).toHaveBeenCalled()
 
@@ -75,13 +74,12 @@ describe("Given I am connected as an employee", () => {
           document, onNavigate, store: null, localStorage: window.localStorage
         })
 
+        const handleClickIconEye = jest.fn(mockBill.handleClickIconEye)
         const iconsEye = await waitFor(() => screen.getAllByTestId('icon-eye'))
 
-        const handleClickIconEye = jest.fn(mockBill.handleClickIconEye)
-
         const modaleFile = document.getElementById("modaleFile")
-
         $.fn.modal = jest.fn(() => modaleFile.classList.add('show'))
+        // const showModal = jest.fn(() => 
 
         iconsEye.forEach(icon => {
           icon.addEventListener('click', () => handleClickIconEye(icon))
@@ -95,9 +93,9 @@ describe("Given I am connected as an employee", () => {
   })
 })
 
-// Integration test GET
 describe("Given I am a user connected as Employee", () => {
   describe("When I navigate to BillsUI", () => {
+    // Integration test GET
     test("Then I should see the dashboard elements", async () => {
       localStorage.setItem("user", JSON.stringify({ type: "Employee" }))
       const root = document.createElement("div")
@@ -119,6 +117,7 @@ describe("Given I am a user connected as Employee", () => {
       expect(btnLogout).toBeTruthy()
     })
 
+    // Unit test
     test('Then should return unformatted date when formatDate fails', () => {
       const mockStore = {
         bills: jest.fn().mockReturnValue({
@@ -133,6 +132,7 @@ describe("Given I am a user connected as Employee", () => {
     })
   })
 
+  // Integration test GET
   describe("When an error occurs on API", () => {
     beforeEach(() => {
       jest.spyOn(mockedBills, "bills")
@@ -159,7 +159,9 @@ describe("Given I am a user connected as Employee", () => {
         }
       })
       window.onNavigate(ROUTES_PATH.Bills)
+
       await new Promise(process.nextTick)
+      // await new Promise(resolve => setTimeout(resolve, 0))
       document.body.innerHTML = BillsUI({ error: "Erreur 404" })
       const message = await screen.getByText(/Erreur 404/)
       expect(message).toBeTruthy()
@@ -175,6 +177,7 @@ describe("Given I am a user connected as Employee", () => {
       })
       window.onNavigate(ROUTES_PATH.Bills)
       await new Promise(process.nextTick)
+      // await new Promise(resolve => setTimeout(resolve, 0))
       document.body.innerHTML = BillsUI({ error: "Erreur 500" })
       const message = await screen.getByText(/Erreur 500/)
       expect(message).toBeTruthy()
