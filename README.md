@@ -7,7 +7,7 @@ Malheureusement pour Billed, Garance, une collègue de la feature team “note d
 Dans deux semaines, l’équipe doit montrer la solution qui fonctionne à l’ensemble de l’entreprise.
 Matthieu, Lead Developer de la feature team a demandé à être aidé pour tenir les délais et vous avez appris hier lors de la réunion d’équipe que c’est vous qui avez été désigné !
 
-<img src="/Billed-app-FR-Front-main/src/assets/images/expense_report.png"/>
+<img src="./Billed-app-FR-Front-main/src/assets/images/expense_report.png"/>
  
 ## Informations générales
 
@@ -34,8 +34,8 @@ Deux parcours utilisateurs sont implémentés :
 
 ## Accès au projet
 
-- **Back-end** : <a href="/Billed-app-FR-Back-main">[Repo backend ici]</a>
-- **Front-end** : <a href="/Billed-app-FR-Front-main">[Repo frontend ici]</a>
+- **Back-end** : <a href="./Billed-app-FR-Back-main">[Repo backend ici]</a>
+- **Front-end** : <a href="./Billed-app-FR-Front-main">[Repo frontend ici]</a>
 
 Lisez attentivement les **README** des deux dépôts pour configurer l'environnement correctement.
 
