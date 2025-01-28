@@ -29,32 +29,45 @@ export default class {
 
   getBills = () => {
     if (this.store) {
-      return this.store
-      .bills()
-      .list()
-      .then(snapshot => {
-        const bills = snapshot
-          .map(doc => {
-            try {
-              return {
-                ...doc,
-                date: formatDate(doc.date),
-                status: formatStatus(doc.status)
-              }
-            } catch(e) {
-              // if for some reason, corrupted data was introduced, we manage here failing formatDate function
-              // log the error and return unformatted date in that case
-              console.log(e,'for',doc)
-              return {
-                ...doc,
-                date: doc.date,
-                status: formatStatus(doc.status)
-              }
-            }
-          })
-          console.log('length', bills.length)
-        return bills
+      return this.store.bills().list()
+        .then(bills => this.formatBills(bills))
+        .catch(error => {
+          console.error("Error fetching bills:", error);
+        });
+    } else {
+      // On peut mocker le fetch API pour les tests
+      return fetch(`${process.env.API_URL}/bills`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('token') // Si tu utilises un token pour l'authentification
+        }
       })
+        .then(response => response.json())
+        .then(bills => this.formatBills(bills))
+        .catch(error => {
+          console.error("Error fetching bills:", error);
+        });
     }
   }
+  
+  formatBills = (bills) => {
+    return bills.map(bill => {
+      try {
+        return {
+          ...bill,
+          date: formatDate(bill.date),
+          status: formatStatus(bill.status),
+        };
+      } catch (e) {
+        console.log(e, 'for', bill);
+        return {
+          ...bill,
+          date: bill.date,
+          status: formatStatus(bill.status),
+        };
+      }
+    });
+  }
+  
 }
